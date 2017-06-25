@@ -31,7 +31,7 @@
     <Content Remove="wwwroot\js\site.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Reports2016.Domains\Reports2016.Domains.csproj" />
     <ProjectReference Include="..\Report2016.AzureRepositories\Report2016.AzureRepositories.csproj" />
+    <ProjectReference Include="..\Reports2016.Domains\Reports2016.Domains.csproj" />
   </ItemGroup>
 </Project>
