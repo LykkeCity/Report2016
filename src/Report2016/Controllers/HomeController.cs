@@ -24,5 +24,12 @@ namespace Report2016.Controllers
 		{
 			return View();
 		}
+
+		[HttpGet("/Signin")]
+		public IActionResult Signin()
+		{
+			return View();
+		}
+
     }
 }
