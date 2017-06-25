@@ -1,10 +1,47 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
+﻿@{
+    ViewData["Title"] = "Lykke Report 2016";
+}
 
-</body>
-</html>
+<section class="section">
+    <div class="container">
+      <div class="r_block r_block--results">
+        <div class="r_block__header">
+          <h3 class="pull-left">Voting Results</h3>
+          <a href="https://lykkecity.github.io/LykkeAnnualReportMarkup/results.html#" class="pull-right">Details</a>
+        </div>
+
+        <div class="r_results">
+          <div class="r_result">
+            <div class="r_result__candle">
+              <div class="r_candle" data-height="85" style="height: 85%;"></div>
+            </div>
+            <div class="r_result__info">
+              <div class="r_result__accent">126,758</div>
+              <div class="r_result__text">Voted <b>YES</b></div>
+              <span class="r_result__desc">85%</span>
+            </div>
+          </div>
+          <div class="r_result">
+            <div class="r_result__candle">
+              <div class="r_candle" data-height="5" style="height: 5%;"></div>
+            </div>
+            <div class="r_result__info">
+              <div class="r_result__accent">3,020</div>
+              <div class="r_result__text">Voted <b>NO</b></div>
+              <span class="r_result__desc">5%</span>
+            </div>
+          </div>
+          <div class="r_result">
+            <div class="r_result__candle">
+              <div class="r_candle" data-height="35" style="height: 35%;"></div>
+            </div>
+            <div class="r_result__info">
+              <div class="r_result__accent">72,401</div>
+              <div class="r_result__text">Voted <b>NOT&nbsp;SURE</b></div>
+              <span class="r_result__desc">35%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

@@ -12,5 +12,11 @@ namespace Report2016.Controllers
         {
             return View();
         }
+
+        [HttpGet("/Result")]
+		public IActionResult Result()
+		{
+			return View();
+		}
     }
 }
