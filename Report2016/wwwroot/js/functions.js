@@ -48,10 +48,26 @@ function textareaCounter() {
   });
 }
 
+function resultsCounter() {
+  var comma_separator_number_step = $.animateNumber.numberStepFactories.separator(',');
+
+  $('.r_result__accent').each(function() {
+    console.log($(this).text().replace(',', ''));
+    $(this).animateNumber(
+      {
+        number: $(this).text().replace(',', ''),
+        numberStep: comma_separator_number_step
+      },
+      1000
+    );
+  });
+}
+
 
 $(document).ready(function() {
   initEventsOnResize();
   initEventsOnClick();
   initEventsOnLoad();
   textareaCounter();
+  resultsCounter();
 });
