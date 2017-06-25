@@ -1,7 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report2016", "Report2016\Report2016.csproj", "{0163201A-BE18-4AF5-891D-ECC898513FDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Report2016", "src\Report2016\Report2016.csproj", "{0163201A-BE18-4AF5-891D-ECC898513FDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
