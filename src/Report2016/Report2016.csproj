@@ -34,4 +34,9 @@
     <ProjectReference Include="..\Report2016.AzureRepositories\Report2016.AzureRepositories.csproj" />
     <ProjectReference Include="..\Reports2016.Domains\Reports2016.Domains.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

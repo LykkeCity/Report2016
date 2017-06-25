@@ -33,7 +33,7 @@ namespace Report2016
             // Add framework services.
             services.AddMvc();
 
-            var settings = HttpSettingsLoader.Load<SettingsModel>();
+            var settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
 
             var logs = services.UseLogToAzureStorage(settings.LogsConnectionString);
 
