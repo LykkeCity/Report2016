@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Report2016.Helpers;
 
 namespace Report2016.Controllers
 {
@@ -7,8 +8,7 @@ namespace Report2016.Controllers
 
 
         public static string GetUserId(this Controller ctx){
-            //Todo - implement after Auth server integration
-            return null;
+            return  ctx.User.Identity.GetUserId();
         }
     }
 }

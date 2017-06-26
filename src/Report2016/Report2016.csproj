@@ -16,6 +16,9 @@
     <PackageReference Include="Lykke.SettingsReader" Version="1.0.37" />
     <PackageReference Include="Lykke.Logs" Version="1.0.14" />
     <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="1.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="1.1.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="2.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="1.1.2" />
   </ItemGroup>
 
 
@@ -23,6 +26,8 @@
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="Models\" />
+    <Folder Include="Authentication\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\css\site.css" />

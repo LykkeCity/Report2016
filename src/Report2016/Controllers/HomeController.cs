@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Report2016.Models;
 using Reports2016.Domains;
@@ -25,6 +26,19 @@ namespace Report2016.Controllers
 
             return RedirectToAction("Vote");
         }
+
+		[Authorize]
+		public IActionResult DoSignIn()
+		{
+			return RedirectToAction("Index");
+		}
+
+
+		[Authorize]
+		public IActionResult Auth()
+		{
+			return RedirectToAction("Index");
+		}
 
         [HttpGet("/Result")]
 		public IActionResult Result()
