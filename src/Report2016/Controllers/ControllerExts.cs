@@ -8,7 +8,7 @@ namespace Report2016.Controllers
 
         public static string GetUserId(this Controller ctx){
             //Todo - implement after Auth server integration
-            return "ToDo";
+            return null;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Report2016
 			var logs = new LykkeLogToAzureStorage(
 				applicationName,
                 new AzureTableStorage<LogEntity>(settings.LogsConnectionString, "VotesLogs", null),
-				null);
+				null);  
 
 			services.AddSingleton<ILog>(logs);
 
