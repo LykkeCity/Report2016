@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Lykke.Logs;
+using Report2016.AzureRepositories;
 
 namespace Report2016
 {
@@ -29,6 +32,12 @@ namespace Report2016
         {
             // Add framework services.
             services.AddMvc();
+
+            var settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
+
+            var logs = services.UseLogToAzureStorage(settings.LogsConnectionString);
+
+            services.BindAzureRepositories(settings.VotesConnectionString, logs);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

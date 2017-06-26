@@ -11,6 +11,10 @@
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="1.1.2" />
+    <PackageReference Include="Lykke.Common" Version="1.1.72" />
+    <PackageReference Include="Lykke.AzureRepositories" Version="1.0.58" />
+    <PackageReference Include="Lykke.SettingsReader" Version="1.0.37" />
+    <PackageReference Include="Lykke.Logs" Version="1.0.14" />
   </ItemGroup>
 
 
@@ -25,5 +29,14 @@
     <Content Remove="Views\Home\Contact.cshtml" />
     <Content Remove="wwwroot\js\site.js" />
     <Content Remove="wwwroot\js\site.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Report2016.AzureRepositories\Report2016.AzureRepositories.csproj" />
+    <ProjectReference Include="..\Reports2016.Domains\Reports2016.Domains.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Dockerfile">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
