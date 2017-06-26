@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Report2016.Controllers
 {
+	
     public class HomeController : Controller
     {
+	    
         public IActionResult Index()
         {
             return View();
@@ -32,4 +34,5 @@ namespace Report2016.Controllers
 		}
 
     }
+	
 }

@@ -15,6 +15,7 @@
     <PackageReference Include="Lykke.AzureRepositories" Version="1.0.58" />
     <PackageReference Include="Lykke.SettingsReader" Version="1.0.37" />
     <PackageReference Include="Lykke.Logs" Version="1.0.14" />
+    <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="1.0.4" />
   </ItemGroup>
 
 

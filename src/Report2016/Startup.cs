@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Lykke.SettingsReader;
+﻿using Lykke.SettingsReader;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Lykke.Logs;
 using Report2016.AzureRepositories;
+using AzureStorage.Tables;
+using Common.Log;
 
 namespace Report2016
 {
@@ -35,9 +33,18 @@ namespace Report2016
 
             var settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
 
-            var logs = services.UseLogToAzureStorage(settings.LogsConnectionString);
+			var applicationName =
+						  Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName;
 
-            services.BindAzureRepositories(settings.VotesConnectionString, logs);
+			var logs = new LykkeLogToAzureStorage(
+				applicationName,
+                new AzureTableStorage<LogEntity>(settings.LogsConnectionString, "VotesLogs", null),
+				null);
+
+			services.AddSingleton<ILog>(logs);
+
+
+			services.BindAzureRepositories(settings.VotesConnectionString, logs);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
