@@ -45,7 +45,8 @@ namespace Report2016.AzureRepositories
                 RowKey = GenerateRowKey(src.Email),
                 Email = src.Email,
                 UserId = src.UserId,
-                Comment = src.Comment
+                Comment = src.Comment,
+                Created = src.Created
             };
 
             result.SetOption(src.Option);
