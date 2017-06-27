@@ -35,6 +35,8 @@ namespace Report2016.AzureRepositories
 
         public string Comment {get;set;}
 
+        public DateTime Created { get; set; }
+
         public static VoteEntity Create(IVote src)
         {
             var result = new VoteEntity

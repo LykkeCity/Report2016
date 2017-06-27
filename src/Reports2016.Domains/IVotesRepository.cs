@@ -20,6 +20,7 @@ namespace Reports2016.Domains
         string Email { get; }
         VoteOption Option { get; }
         string Comment { get; }
+        DateTime Created { get; }
     }
 
     public interface IVotesRepository

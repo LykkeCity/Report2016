@@ -16,14 +16,11 @@
         
         <form action="@Url.Action("MyVote")" class="form form_vote form--simple" method="post">
 
-        @{
-			     	if (string.IsNullOrEmpty(Model.Token))
-                {
-
-                   <input type="hidden" name="Token" value="@Model.Token"/>
-
-                }
-         }
+        @if (string.IsNullOrEmpty(Model.Token))
+        {
+			<input type="hidden" name="Token" value="@Model.Token"/>
+        }
+				
           <div class="form-group">
             <div class="radio-group">
               <div class="radio radio--plate">

@@ -18,6 +18,8 @@ namespace Report2016.Models
 
         public string Email { get; set; }
 
+        public DateTime Created => DateTime.UtcNow;
+
         VoteOption IVote.Option {
             get{
                 if (!string.IsNullOrEmpty(Yes))
