@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Report2016.Models.VoteViewModel
+
+@{
     ViewData["Title"] = "Lykke Report 2016";
 }
 
@@ -13,6 +15,15 @@
         <h5 class="text-center">Do you approve Lykke Annual Report 2016?</h5>
         
         <form action="@Url.Action("MyVote")" class="form form--simple" method="post">
+
+        @{
+				if (string.IsNullOrEmpty(Model.Token))
+                {
+                <input type="hidden" name="Token" value="@Model.Token"/>
+
+                }
+         }
+				
           <div class="form-group">
             <div class="radio-group">
               <div class="radio radio--plate">

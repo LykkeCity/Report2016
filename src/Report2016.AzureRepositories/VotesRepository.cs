@@ -14,12 +14,12 @@ namespace Report2016.AzureRepositories
             return "v";
         }
 
-        public static string GenerateRowKey(string userId)
+        public static string GenerateRowKey(string email)
         {
-            return userId;
+            return email.ToLower();
         }
 
-        public string UserId => PartitionKey;
+        public string UserId { get; set; }
 
         public string Email { get; set; }
 
@@ -33,13 +33,17 @@ namespace Report2016.AzureRepositories
 
         VoteOption IVote.Option => Option.ParseEnum<VoteOption>(VoteOption.NotSure);
 
+        public string Comment {get;set;}
+
         public static VoteEntity Create(IVote src)
         {
             var result = new VoteEntity
             {
                 PartitionKey = GeneratePartitionKey(),
-                RowKey = GenerateRowKey(src.UserId),
+                RowKey = GenerateRowKey(src.Email),
                 Email = src.Email,
+                UserId = src.UserId,
+                Comment = src.Comment
             };
 
             result.SetOption(src.Option);
@@ -61,12 +65,13 @@ namespace Report2016.AzureRepositories
             _tableStorage = tableStorage;
         }
 
-        public async Task<IVote> GetAsync(string userId)
+        public async Task<IVote> GetAsync(string email)
         {
             var partitionKey = VoteEntity.GeneratePartitionKey();
-            var rowKey = VoteEntity.GenerateRowKey(userId);
+            var rowKey = VoteEntity.GenerateRowKey(email);
             return await _tableStorage.GetDataAsync(partitionKey, rowKey);
         }
+
 
         public async Task<VoteResult> VoteAsync(IVote vote)
         {
@@ -81,5 +86,6 @@ namespace Report2016.AzureRepositories
                 return VoteResult.VoteIsAlreadyMade;
             }
         }
+
     }
 }

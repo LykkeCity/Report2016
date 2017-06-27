@@ -11,17 +11,19 @@ namespace Report2016.Controllers
     {
 
         IVoteTokensRepository _voteTokensRepository;
+        IVotesRepository _votesRepository;
 
-        public HomeController(IVoteTokensRepository voteTokensRepository)
+        public HomeController(IVoteTokensRepository voteTokensRepository, IVotesRepository votesRepository)
         {
             _voteTokensRepository = voteTokensRepository;
+            _votesRepository = votesRepository;
         }
 
         public IActionResult Index()
         {
-            var userId = this.GetUserId();
+            var usereEmail = this.GetUserEmail();
 
-            if (string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(usereEmail))
                 return RedirectToAction("Signin");
 
             return RedirectToAction("Vote");
@@ -60,20 +62,52 @@ namespace Report2016.Controllers
 
 
 		[HttpGet("/Vote")]
+        [Authorize]
         public IActionResult Vote()
 		{
-			return View();
+            var viewModel = new VoteViewModel();
+			return View(viewModel);
 		}
 
 
 		[HttpPost("/MyVote")]
-		public IActionResult MyVote(MyVoteModel model)
+		public async Task<IActionResult> MyVote(MyVoteContract model)
 		{
 
             if (model.NotVoted())
-				return Redirect("Vote");
+				return RedirectToAction("Vote");
             
-            return Content(model.Comment);
+            if (string.IsNullOrEmpty(model.Token))
+            {
+                var user = this.GetUser();
+
+                if (user == null)
+                    return RedirectToAction("Signin");
+
+                model.Email = user.Email;
+                model.UserId = user.UserId;
+
+            }
+            else
+            {
+                var token = await _voteTokensRepository.FindTokenAsync(model.Token);
+
+                if (token == null)
+					return RedirectToAction("Signin");
+
+                model.Email = token.Email;
+            }
+
+            IVote vote = await _votesRepository.GetAsync(model.Email);
+
+            if (vote != null)
+                return RedirectToAction("Success");
+
+
+
+            await _votesRepository.VoteAsync(model);
+
+            return RedirectToAction("Success");
 
 		}
 
@@ -83,14 +117,18 @@ namespace Report2016.Controllers
 		{
 
             if (string.IsNullOrEmpty(id))
-                return Redirect("Signin");
+                return RedirectToAction("Vote");
 
             var token = await _voteTokensRepository.FindTokenAsync(id);
 
             if (token == null)
-                return Redirect("Signin");
-            
-			return Content(id);
+                return RedirectToAction("Vote");
+
+            var viewModel = new VoteViewModel{
+                Token = id
+            };
+
+			return View("Vote", viewModel);
 
 		}
 

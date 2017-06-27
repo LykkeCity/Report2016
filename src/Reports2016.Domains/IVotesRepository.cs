@@ -19,12 +19,14 @@ namespace Reports2016.Domains
         string UserId { get; }
         string Email { get; }
         VoteOption Option { get; }
+        string Comment { get; }
     }
 
     public interface IVotesRepository
     {
         Task<VoteResult> VoteAsync(IVote vote);
-        Task<IVote> GetAsync(string userId);
+        Task<IVote> GetAsync(string email);
+
     }
 
 }
