@@ -63,8 +63,14 @@ namespace Report2016.Controllers
 
 		[HttpGet("/Vote")]
         [Authorize]
-        public IActionResult Vote()
+        public async Task<IActionResult> Vote()
 		{
+            var email = this.GetUserEmail();
+			var vote = await _votesRepository.GetAsync(email);
+
+            if (vote != null)
+				return RedirectToAction("Success");            
+
             var viewModel = new VoteViewModel();
 			return View(viewModel);
 		}
