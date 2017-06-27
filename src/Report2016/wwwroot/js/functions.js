@@ -62,6 +62,16 @@ function resultsCounter() {
   });
 }
 
+function toggleRadio() {
+  $(".form_vote .radio").on('click', function() {
+    if ($(".form_vote .radio input").is(':checked')) {
+      $('.form_vote .btn').removeAttr('disabled');
+    }
+
+    $(this).siblings('.radio').find('input').removeAttr('checked');
+    $(this).find('input').attr('checked', 'checked')
+  });
+}
 
 $(document).ready(function() {
   initEventsOnResize();
@@ -69,4 +79,5 @@ $(document).ready(function() {
   initEventsOnLoad();
   textareaCounter();
   resultsCounter();
+  toggleRadio();
 });
