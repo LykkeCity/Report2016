@@ -20,6 +20,8 @@ namespace Report2016.AzureRepositories
         public string Email { get; set; }
 
         public string ClientId { get; set; }
+
+        public string FullName { get; set; }
     }
 
 

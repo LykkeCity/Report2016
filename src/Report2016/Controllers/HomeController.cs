@@ -69,9 +69,14 @@ namespace Report2016.Controllers
 			var vote = await _votesRepository.GetAsync(email);
 
             if (vote != null)
-				return RedirectToAction("Success");            
+				return RedirectToAction("Success");
 
-            var viewModel = new VoteViewModel();
+
+            var user = this.GetUser();
+
+            var viewModel = new VoteViewModel{
+                User = user.FirstName+" "+user.LastName
+            };
 			return View(viewModel);
 		}
 
@@ -130,8 +135,10 @@ namespace Report2016.Controllers
             if (token == null)
                 return RedirectToAction("Vote");
 
-            var viewModel = new VoteViewModel{
-                Token = id
+            var viewModel = new VoteViewModel
+            {
+                Token = id,
+                User = token.FullName
             };
 
 			return View("Vote", viewModel);

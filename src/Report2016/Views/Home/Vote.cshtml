@@ -7,10 +7,14 @@
   <section class="section">
     <div class="container">
       <div class="r_block">
-        <div class="user_badge user_badge--small">
-          <div class="user_badge__img"><img src="http://lorempixel.com/40/40/" alt=""></div>
-          <div class="user_badge__title">McQuin</div>
-        </div>
+
+			@if (Model.User != null){
+			  <div class="user_badge user_badge--small">
+              <div class="user_badge__img"><img src="http://lorempixel.com/40/40/" alt=""></div>
+              <div class="user_badge__title">@Model.User</div>
+              </div>
+			}
+
 
         <h5 class="text-center">Do you approve Lykke Annual Report 2016?</h5>
         
