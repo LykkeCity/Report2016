@@ -135,6 +135,13 @@ namespace Report2016.Controllers
             if (token == null)
                 return RedirectToAction("Index");
 
+
+
+            var vote = await _votesRepository.GetAsync(token.Email);
+
+            if (vote != null)
+				return RedirectToAction("Success");               
+
             var viewModel = new VoteViewModel
             {
                 Token = id,
