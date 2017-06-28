@@ -128,12 +128,12 @@ namespace Report2016.Controllers
 		{
 
             if (string.IsNullOrEmpty(id))
-                return RedirectToAction("Vote");
+                return RedirectToAction("Index");
 
             var token = await _voteTokensRepository.FindTokenAsync(id);
 
             if (token == null)
-                return RedirectToAction("Vote");
+                return RedirectToAction("Index");
 
             var viewModel = new VoteViewModel
             {
