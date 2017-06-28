@@ -20,7 +20,7 @@
         
         <form action="@Url.Action("MyVote")" class="form form_vote form--simple" method="post">
 
-        @if (string.IsNullOrEmpty(Model.Token))
+        @if (!string.IsNullOrEmpty(Model.Token))
         {
 			<input type="hidden" name="Token" value="@Model.Token"/>
         }
