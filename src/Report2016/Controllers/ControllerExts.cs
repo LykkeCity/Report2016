@@ -7,8 +7,12 @@ namespace Report2016.Controllers
     {
 
 
-        public static string GetUserId(this Controller ctx){
-            return  ctx.User.Identity.GetUserId();
+        public static TheUser GetUser(this Controller ctx){
+            return ctx.User.Identity.GetUser();
+        }
+
+        public static string GetUserEmail(this Controller ctx){
+            return  ctx.User.Identity.GetUserEmail();
         }
     }
 }

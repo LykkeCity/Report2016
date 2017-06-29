@@ -11,6 +11,7 @@ namespace Report2016.Helpers
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string UserId { get; set; }
 
     }
 
@@ -32,26 +33,29 @@ namespace Report2016.Helpers
             var email = claimsList.Where(c => c.Type == ClaimTypes.Email)
                    .Select(c => c.Value).SingleOrDefault();
 
-
+			var userId = claimsList.Where(c => c.Type == ClaimTypes.NameIdentifier)
+				   .Select(c => c.Value).SingleOrDefault();
+            
             var user = new TheUser
             {
                 Email = email,
                 FirstName = firstName,
                 LastName = lastName,
+                UserId = userId
             };
 
             return user;
         }
 
 
-		public static string GetUserId(this IIdentity identity)
+		public static string GetUserEmail(this IIdentity identity)
 		{
 			var claimsIdentity = (ClaimsIdentity)identity;
 			var claims = claimsIdentity.Claims;
 
 			var claimsList = claims as IList<Claim> ?? claims.ToList();
 
-            var result = claimsList.Where(c => c.Type == ClaimTypes.NameIdentifier)
+            var result = claimsList.Where(c => c.Type == ClaimTypes.Email)
 				   .Select(c => c.Value).SingleOrDefault();
             
             return result;
