@@ -1475,8 +1475,7 @@ textarea.form-control { min-height: 105px; padding: 15px 20px; }
   .r_block__header { margin-bottom: 12px; }
   .r_block__header h3, .r_block__header a, .r_block__header .middot { font-size: 18px; line-height: 1; }
   .r_block__header a { position: relative; top: -1px; }
-  .r_block .valign { padding-top: 0; height: auto !important; min-height: 0 !important; }
-  .r_block .valign_cell { vertical-align: top; }
+  .r_block .valign { padding-top: 0; height: auto !important;}
   .r_block--message { min-height: 0; }
   .r_block--message .valign { padding-bottom: 20px; }
   .r_block--message .report_link { position: static; } }
