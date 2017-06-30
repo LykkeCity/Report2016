@@ -19,52 +19,65 @@ namespace Report2016.Controllers
             _votesRepository = votesRepository;
         }
 
+
+        private string urlToRedirect = "https://www.lykke.com/Annual_Report_2016.pdf";
+
         public IActionResult Index()
         {
-            var usereEmail = this.GetUserEmail();
+
+            return Redirect(urlToRedirect);
+
+		/*	var usereEmail = this.GetUserEmail();
 
             if (string.IsNullOrEmpty(usereEmail))
                 return RedirectToAction("Signin");
 
-            return RedirectToAction("Vote");
+            return RedirectToAction("Vote");*/
         }
 
 		[Authorize]
 		public IActionResult DoSignIn()
 		{
-			return RedirectToAction("Index");
+			return Redirect(urlToRedirect);
+			//return RedirectToAction("Index");
 		}
 
 
 		[Authorize]
 		public IActionResult Auth()
 		{
-			return RedirectToAction("Index");
+			return Redirect(urlToRedirect);
+			//return RedirectToAction("Index");
 		}
 
         [HttpGet("/Result")]
 		public IActionResult Result()
 		{
-			return View();
+			return Redirect(urlToRedirect);
+			//return View();
 		}
 
 		[HttpGet("/Success")]
 		public IActionResult Success()
 		{
-			return View();
+			return Redirect(urlToRedirect);
+			// return View();
 		}
 
 		[HttpGet("/Signin")]
 		public IActionResult Signin()
 		{
-			return View();
+			return Redirect(urlToRedirect);
+			//return View();
 		}
 
 
 		[HttpGet("/Vote")]
         [Authorize]
-        public async Task<IActionResult> Vote()
+        public IActionResult Vote()
 		{
+			return Redirect(urlToRedirect);
+            /*
             var email = this.GetUserEmail();
 			var vote = await _votesRepository.GetAsync(email);
 
@@ -77,13 +90,16 @@ namespace Report2016.Controllers
             var viewModel = new VoteViewModel{
                 User = user.FirstName+" "+user.LastName
             };
-			return View(viewModel);
+            return View(viewModel);*/
 		}
 
 
 		[HttpPost("/MyVote")]
-		public async Task<IActionResult> MyVote(MyVoteContract model)
+		public IActionResult MyVote(MyVoteContract model)
 		{
+
+			return Redirect(urlToRedirect);
+            /*
 
             if (model.NotVoted())
 				return RedirectToAction("Vote");
@@ -120,12 +136,16 @@ namespace Report2016.Controllers
 
             return RedirectToAction("Success");
 
+*/
+
 		}
 
 
         [HttpGet("/Vote/{id}")]
-		public async Task<IActionResult> Vote([FromRoute]string id)
+		public IActionResult Vote([FromRoute]string id)
 		{
+			return Redirect(urlToRedirect);
+            /*
 
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction("Index");
@@ -149,7 +169,7 @@ namespace Report2016.Controllers
             };
 
 			return View("Vote", viewModel);
-
+*/
 		}
 
     }
