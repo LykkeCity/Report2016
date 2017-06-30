@@ -135,7 +135,8 @@ namespace Report2016
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{*url}",
+                    defaults: new { controller = "Home", action = "Index" });
             });
         }
     }

@@ -24,8 +24,7 @@ namespace Report2016.Controllers
 
         public IActionResult Index()
         {
-
-            return Redirect(urlToRedirect);
+			return View("Result");
 
 		/*	var usereEmail = this.GetUserEmail();
 
