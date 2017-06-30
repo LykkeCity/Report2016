@@ -9,7 +9,7 @@ namespace Report2016.Controllers
 	
     public class HomeController : Controller
     {
-
+		/*
         IVoteTokensRepository _voteTokensRepository;
         IVotesRepository _votesRepository;
 
@@ -18,7 +18,7 @@ namespace Report2016.Controllers
             _voteTokensRepository = voteTokensRepository;
             _votesRepository = votesRepository;
         }
-
+*/
 
         private string urlToRedirect = "https://www.lykke.com/Annual_Report_2016.pdf";
 
@@ -33,7 +33,7 @@ namespace Report2016.Controllers
                 return RedirectToAction("Signin");
 
             return RedirectToAction("Vote");*/
-        }
+	}
 
 		[Authorize]
 		public IActionResult DoSignIn()
@@ -53,8 +53,8 @@ namespace Report2016.Controllers
         [HttpGet("/Result")]
 		public IActionResult Result()
 		{
-			return Redirect(urlToRedirect);
-			//return View();
+			//return Redirect(urlToRedirect);
+			return View();
 		}
 
 		[HttpGet("/Success")]

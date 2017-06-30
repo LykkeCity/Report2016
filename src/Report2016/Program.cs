@@ -19,7 +19,7 @@ namespace Report2016
 				var host = new WebHostBuilder()
 					.UseKestrel(opts => opts.ThreadCount = 1)
 					.UseContentRoot(Directory.GetCurrentDirectory())
-					.UseUrls("http://*:80/")
+					//.UseUrls("http://*:80/")
 					.UseIISIntegration()
 					.UseStartup<Startup>()
 					.Build();

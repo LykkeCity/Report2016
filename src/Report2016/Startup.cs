@@ -33,14 +33,14 @@ namespace Report2016
 
         public static SettingsModel.ReportsModel Settings;
 
-        public static ILog Log;
+       // public static ILog Log;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
-
+            /*
             Settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
 
             var applicationName =
@@ -66,7 +66,7 @@ namespace Report2016
 			services.AddAuthentication(
 	            options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
-
+*/
 
 
 
@@ -91,7 +91,7 @@ namespace Report2016
             app.UseStaticFiles();
 
 
-
+            /*
 			app.UseCookieAuthentication(new CookieAuthenticationOptions
 			{
 				AutomaticAuthenticate = true,
@@ -130,7 +130,7 @@ namespace Report2016
 			{
 				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 			});
-
+*/
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
