@@ -1,8 +1,6 @@
 ﻿using System;
 namespace Report2016
 {
-
-
 	public class AuthenticationModel
 	{
 		public string ClientId { get; set; }
@@ -11,25 +9,16 @@ namespace Report2016
 		public string Authority { get; set; }
 	}
 
-    public class SettingsModel
+    public class ReportsModel
     {
-        public class ReportsModel
-        {
-            public string VotesConnectionString { get; set; }
-            public string LogsConnectionString { get; set; }
+        public string VotesConnectionString { get; set; }
+        public string LogsConnectionString { get; set; }
 
-			public AuthenticationModel Authentication { get; set; }
-        }
-
-
-
-
-        public ReportsModel Report2016 { get; set; }
-
-
-
+        public AuthenticationModel Authentication { get; set; }
     }
 
-
-
+    public class SettingsModel
+    {
+        public ReportsModel Report2016 { get; set; }
+    }
 }

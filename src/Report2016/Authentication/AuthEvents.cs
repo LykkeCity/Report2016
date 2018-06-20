@@ -19,7 +19,7 @@ namespace Report2016.Authentication
 
         }
 
-        public override Task RemoteFailure(FailureContext context)
+        public override Task RemoteFailure(RemoteFailureContext context)
         {
             _log.WriteErrorAsync("Authentication", "RemoteFailure", context.Failure.Message + context.Failure.InnerException, context.Failure).Wait();
 
@@ -31,20 +31,18 @@ namespace Report2016.Authentication
 
         public override async Task TokenValidated(TokenValidatedContext context)
         {
-            var email = context.Ticket.Principal.Claims.Where(c => c.Type == ClaimTypes.Email)
+            var email = context.Principal.Claims.Where(c => c.Type == ClaimTypes.Email)
                    .Select(c => c.Value).SingleOrDefault();
-
 
             await base.TokenValidated(context);
         }
 
         public override Task TicketReceived(TicketReceivedContext context)
         {
-            context.Ticket.Properties.Items.Clear();
-
+            context.Properties.Items.Clear();
             context.Properties.Items.Clear();
 
-            foreach (var principalClaim in context.Ticket.Principal.Claims)
+            foreach (var principalClaim in context.Principal.Claims)
             {
                 principalClaim.Properties.Clear();
             }

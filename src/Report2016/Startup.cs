@@ -14,122 +14,80 @@ using System;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Report2016.Authentication;
+using Lykke.Common.ApiLibrary.Middleware;
 
 namespace Report2016
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        private IConfiguration _configuration;
+        private SettingsModel _settings;
+
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            _configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
-
-        public static SettingsModel.ReportsModel Settings;
-
-       // public static ILog Log;
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
             services.AddMvc();
-            
-            Settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
 
-            var applicationName =
-                          Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName;
+            var settingsManager = _configuration.LoadSettings<SettingsModel>();
+            _settings = settingsManager.CurrentValue;
+            var connectionStringManager = settingsManager.ConnectionString(x => x.Report2016.VotesConnectionString);
 
-            Log = new LykkeLogToAzureStorage(
-                applicationName,
-                new AzureTableStorage<LogEntity>(Settings.LogsConnectionString, "VotesLogs", null),
-                null);
+            //var log = new LogToAzureStorage(
+            //    applicationName,
+            //    new AzureTableStorage<LogEntity>(Settings.LogsConnectionString, "VotesLogs", null),
+            //    null);        
 
-            services.AddSingleton<ILog>(Log);
-
-
-            services.BindAzureRepositories(Settings.VotesConnectionString, Log);
-
+            var log = new LogToConsole();
+            services.AddSingleton<ILog>(log);
+            services.BindAzureRepositories(connectionStringManager, log);
 
             services.Configure<ForwardedHeadersOptions>(options =>
             {
-              options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
             });
 
+            var applicationName = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName; 
 
-			services.AddAuthentication(
-	            options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
-
-
-
-
-
+            services.AddAuthentication(x =>
+            {
+                x.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+            })
+            .AddCookie(x => {
+                x.ExpireTimeSpan = TimeSpan.FromHours(24);
+                x.LoginPath = new PathString("/Home/SignIn");
+                x.AccessDeniedPath = "/404";
+            })
+            .AddOpenIdConnect(x =>
+            {
+                x.RequireHttpsMetadata = true;
+                x.SaveTokens = true;
+                x.ResponseType = "code";
+                x.ClientId = _settings.Report2016.Authentication.ClientId;
+                x.ClientSecret = _settings.Report2016.Authentication.ClientSecret;
+                x.CallbackPath = "/auth";
+                x.Events = new AuthEvent(log);
+                x.Authority = _settings.Report2016.Authentication.Authority;
+                x.Scope.Add("email");
+                x.Scope.Add("profile");
+            });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
 
+            app.UseLykkeForwardedHeaders();
+            app.UseAuthentication();
             app.UseStaticFiles();
-
-
-            
-			app.UseCookieAuthentication(new CookieAuthenticationOptions
-			{
-				AutomaticAuthenticate = true,
-				AutomaticChallenge = true,
-				ExpireTimeSpan = TimeSpan.FromHours(24),
-				LoginPath = new PathString("/signin"),
-				AccessDeniedPath = "/Home/Error"
-			});
-
-
-			app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
-			{
-				RequireHttpsMetadata = true,
-				SaveTokens = true,
-
-				// Note: these settings must match the application details
-				// inserted in the database at the server level.
-				ClientId = Settings.Authentication.ClientId,
-				ClientSecret = Settings.Authentication.ClientSecret,
-				PostLogoutRedirectUri = Settings.Authentication.PostLogoutRedirectUri,
-				CallbackPath = "/auth",
-
-				// Use the authorization code flow.
-				ResponseType = OpenIdConnectResponseType.Code,
-				Events = new AuthEvent(Log),
-
-				// Note: setting the Authority allows the OIDC client middleware to automatically
-				// retrieve the identity provider's configuration and spare you from setting
-				// the different endpoints URIs or the token validation parameters explicitly.
-				Authority = Settings.Authentication.Authority,
-				Scope = { "email profile" }
-			});
-
-
-			app.UseForwardedHeaders(new ForwardedHeadersOptions
-			{
-				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-			});
 
             app.UseMvc(routes =>
             {
