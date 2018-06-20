@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Report2016.Models;
+using Reports2016.Domains;
 
 namespace Report2016.Controllers
 {
 	
     public class HomeController : Controller
     {
-		/*
+		
         IVoteTokensRepository _voteTokensRepository;
         IVotesRepository _votesRepository;
 
@@ -16,20 +17,21 @@ namespace Report2016.Controllers
             _voteTokensRepository = voteTokensRepository;
             _votesRepository = votesRepository;
         }
-*/
+
 
         private string urlToRedirect = "https://www.lykke.com/Annual_Report_2016.pdf";
 
+		[HttpGet("/")]
         public IActionResult Index()
         {
-			return View("Result");
+			//return View("Result");
 
-		/*	var usereEmail = this.GetUserEmail();
+			var usereEmail = this.GetUserEmail();
 
             if (string.IsNullOrEmpty(usereEmail))
                 return RedirectToAction("Signin");
 
-            return RedirectToAction("Vote");*/
+            return RedirectToAction("Vote");
 	}
 
 		[Authorize]

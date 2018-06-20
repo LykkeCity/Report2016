@@ -88,8 +88,7 @@ namespace Report2016
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{*url}",
-                    defaults: new { controller = "Home", action = "Index" });
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
         
