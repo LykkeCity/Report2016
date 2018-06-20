@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lykke.Sdk.Settings;
+
 namespace Report2016
 {
 	public class AuthenticationModel
@@ -17,7 +18,7 @@ namespace Report2016
         public AuthenticationModel Authentication { get; set; }
     }
 
-    public class SettingsModel
+    public class SettingsModel : BaseAppSettings
     {
         public ReportsModel Report2016 { get; set; }
     }
