@@ -6,7 +6,6 @@ namespace Report2016.Controllers
     public static class ControllerExts
     {
 
-
         public static TheUser GetUser(this Controller ctx){
             return ctx.User.Identity.GetUser();
         }

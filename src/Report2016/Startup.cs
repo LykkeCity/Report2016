@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Lykke.Logs;
 using Report2016.AzureRepositories;
 using AzureStorage.Tables;
 using Common.Log;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Report2016.Authentication;
 
@@ -40,7 +40,7 @@ namespace Report2016
         {
             // Add framework services.
             services.AddMvc();
-            /*
+            
             Settings = HttpSettingsLoader.Load<SettingsModel>().Report2016;
 
             var applicationName =
@@ -66,7 +66,7 @@ namespace Report2016
 			services.AddAuthentication(
 	            options => { options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; });
 
-*/
+
 
 
 
@@ -91,7 +91,7 @@ namespace Report2016
             app.UseStaticFiles();
 
 
-            /*
+            
 			app.UseCookieAuthentication(new CookieAuthenticationOptions
 			{
 				AutomaticAuthenticate = true,
@@ -130,7 +130,7 @@ namespace Report2016
 			{
 				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
 			});
-*/
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
