@@ -7,14 +7,17 @@ using Microsoft.Extensions.Logging;
 using Report2016.AzureRepositories;
 using AzureStorage.Tables;
 using Common.Log;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System;
+using Lykke.AzureQueueIntegration;
+using Lykke.Common.Api.Contract.Responses;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Report2016.Authentication;
 using Lykke.Common.ApiLibrary.Middleware;
+using Lykke.Logs;
+using Lykke.SlackNotification.AzureQueue;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Report2016
 {
@@ -30,27 +33,17 @@ namespace Report2016
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddMvc()
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             var settingsManager = _configuration.LoadSettings<SettingsModel>();
             _settings = settingsManager.CurrentValue;
             var connectionStringManager = settingsManager.ConnectionString(x => x.Report2016.VotesConnectionString);
 
-            //var log = new LogToAzureStorage(
-            //    applicationName,
-            //    new AzureTableStorage<LogEntity>(Settings.LogsConnectionString, "VotesLogs", null),
-            //    null);        
+            var log = CreateLogWithSlack(services, settingsManager);
 
-            var log = new LogToConsole();
-            services.AddSingleton<ILog>(log);
+            services.AddSingleton(log);
             services.BindAzureRepositories(connectionStringManager, log);
-
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
-            });
-
-            var applicationName = Microsoft.Extensions.PlatformAbstractions.PlatformServices.Default.Application.ApplicationName; 
 
             services.AddAuthentication(x =>
             {
@@ -84,10 +77,13 @@ namespace Report2016
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
+            
+            var appName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
 
+            app.UseLykkeMiddleware(appName, ex => ErrorResponse.Create("Technical problem"));
             app.UseLykkeForwardedHeaders();
-            app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {
@@ -96,6 +92,45 @@ namespace Report2016
                     template: "{*url}",
                     defaults: new { controller = "Home", action = "Index" });
             });
+        }
+        
+        private static ILog CreateLogWithSlack(IServiceCollection services, IReloadingManager<SettingsModel> settings)
+        {
+            var consoleLogger = new LogToConsole();
+            var aggregateLogger = new AggregateLogger();
+
+            aggregateLogger.AddLog(consoleLogger);
+
+            // Creating slack notification service, which logs own azure queue processing messages to aggregate log
+            var slackService = services.UseSlackNotificationsSenderViaAzureQueue(new AzureQueueSettings
+            {
+                ConnectionString = settings.CurrentValue.SlackNotifications.AzureQueue.ConnectionString,
+                QueueName = settings.CurrentValue.SlackNotifications.AzureQueue.QueueName
+            }, aggregateLogger);
+
+            var dbLogConnectionStringManager = settings.Nested(x => x.Report2016.LogsConnectionString);
+            var dbLogConnectionString = dbLogConnectionStringManager.CurrentValue;
+
+            // Creating azure storage logger, which logs own messages to console log
+            if (!string.IsNullOrEmpty(dbLogConnectionString) && !(dbLogConnectionString.StartsWith("${") && dbLogConnectionString.EndsWith("}")))
+            {
+                var persistenceManager = new LykkeLogToAzureStoragePersistenceManager(
+                    AzureTableStorage<LogEntity>.Create(dbLogConnectionStringManager, "VotesLogs", consoleLogger),
+                    consoleLogger);
+
+                var slackNotificationsManager = new LykkeLogToAzureSlackNotificationsManager(slackService, consoleLogger);
+
+                var azureStorageLogger = new LykkeLogToAzureStorage(
+                    persistenceManager,
+                    slackNotificationsManager,
+                    consoleLogger);
+
+                azureStorageLogger.Start();
+
+                aggregateLogger.AddLog(azureStorageLogger);
+            }
+
+            return aggregateLogger;
         }
     }
 }

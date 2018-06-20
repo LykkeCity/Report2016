@@ -4,12 +4,14 @@
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.4.0" />
-    <PackageReference Include="Lykke.SettingsReader" Version="2.1.0" />
+    <PackageReference Include="Lykke.Common.ApiLibrary" Version="1.7.5" />
+    <PackageReference Include="Lykke.Sdk" Version="2.0.0" />
+    <PackageReference Include="Lykke.SettingsReader" Version="2.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.2.1" />   
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0" />
+    <PackageReference Include="Lykke.SlackNotification.AzureQueue" Version="2.0.5" />
   </ItemGroup>
-    <ItemGroup>
+  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
