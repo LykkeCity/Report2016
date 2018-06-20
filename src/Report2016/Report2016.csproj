@@ -13,8 +13,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Runtime" Version="2.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.0" />    
   </ItemGroup>
   <ItemGroup>
     <Folder Include="wwwroot\css\" />
