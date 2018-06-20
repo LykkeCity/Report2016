@@ -75,7 +75,6 @@ namespace Report2016
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
             }
             
             var appName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
