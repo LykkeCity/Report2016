@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Report2016.Models;
 using Reports2016.Domains;
@@ -8,9 +9,8 @@ namespace Report2016.Controllers
 	
     public class HomeController : Controller
     {
-		
-        IVoteTokensRepository _voteTokensRepository;
-        IVotesRepository _votesRepository;
+	    readonly IVoteTokensRepository _voteTokensRepository;
+	    readonly IVotesRepository _votesRepository;
 
         public HomeController(IVoteTokensRepository voteTokensRepository, IVotesRepository votesRepository)
         {
@@ -37,46 +37,46 @@ namespace Report2016.Controllers
 		[Authorize]
 		public IActionResult DoSignIn()
 		{
-			return Redirect(urlToRedirect);
-			//return RedirectToAction("Index");
+			//return Redirect(urlToRedirect);
+			return RedirectToAction("Index");
 		}
 
 
 		[Authorize]
 		public IActionResult Auth()
 		{
-			return Redirect(urlToRedirect);
-			//return RedirectToAction("Index");
+			//return Redirect(urlToRedirect);
+			return RedirectToAction("Index");
 		}
 
         [HttpGet("/Result")]
 		public IActionResult Result()
 		{
-			//return Redirect(urlToRedirect);
-			return View();
+			return Redirect(urlToRedirect);
+			// return View();
 		}
 
 		[HttpGet("/Success")]
 		public IActionResult Success()
 		{
-			return Redirect(urlToRedirect);
-			// return View();
+			//return Redirect(urlToRedirect);
+			return View();
 		}
 
 		[HttpGet("/Signin")]
 		public IActionResult Signin()
 		{
-			return Redirect(urlToRedirect);
-			//return View();
+			//return Redirect(urlToRedirect);
+			return View();
 		}
 
 
 		[HttpGet("/Vote")]
         [Authorize]
-        public IActionResult Vote()
+        public async Task<IActionResult> Vote()
 		{
-			return Redirect(urlToRedirect);
-            /*
+			//return Redirect(urlToRedirect);
+            
             var email = this.GetUserEmail();
 			var vote = await _votesRepository.GetAsync(email);
 
@@ -89,16 +89,16 @@ namespace Report2016.Controllers
             var viewModel = new VoteViewModel{
                 User = user.FirstName+" "+user.LastName
             };
-            return View(viewModel);*/
+            return View(viewModel);
 		}
 
 
 		[HttpPost("/MyVote")]
-		public IActionResult MyVote(MyVoteContract model)
+		public async Task<IActionResult> MyVote(MyVoteContract model)
 		{
 
-			return Redirect(urlToRedirect);
-            /*
+			//return Redirect(urlToRedirect);
+            
 
             if (model.NotVoted())
 				return RedirectToAction("Vote");
@@ -135,16 +135,16 @@ namespace Report2016.Controllers
 
             return RedirectToAction("Success");
 
-*/
+
 
 		}
 
 
         [HttpGet("/Vote/{id}")]
-		public IActionResult Vote([FromRoute]string id)
+		public async Task<IActionResult> Vote([FromRoute]string id)
 		{
-			return Redirect(urlToRedirect);
-            /*
+			//return Redirect(urlToRedirect);
+            
 
             if (string.IsNullOrEmpty(id))
                 return RedirectToAction("Index");
@@ -168,7 +168,7 @@ namespace Report2016.Controllers
             };
 
 			return View("Vote", viewModel);
-*/
+
 		}
 
     }
